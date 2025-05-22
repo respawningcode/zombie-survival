@@ -131,7 +131,7 @@ local function init()
 		option_3_button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 		option_3_button.BorderColor3 = Color3.fromRGB(190, 190, 190)
 		option_3_button.BorderSizePixel = 2
-		option_3_button.LayoutOrder = 2
+		option_3_button.LayoutOrder = 3
 		option_3_button.Name = '3'
 		option_3_button.Position = UDim2.new(0.2, 0, 0.3, 0)
 		option_3_button.Size = UDim2.new(1, 0, 0.18, 0)
@@ -146,7 +146,7 @@ local function init()
 		option_4_button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 		option_4_button.BorderColor3 = Color3.fromRGB(190, 190, 190)
 		option_4_button.BorderSizePixel = 2
-		option_4_button.LayoutOrder = 2
+		option_4_button.LayoutOrder = 4
 		option_4_button.Name = '4'
 		option_4_button.Position = UDim2.new(0.2, 0, 0.3, 0)
 		option_4_button.Size = UDim2.new(1, 0, 0.18, 0)
