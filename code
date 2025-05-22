@@ -1,0 +1,201 @@
+local http_service = game:GetService('HttpService')
+local player = game:GetService('Players').LocalPlayer
+local tween_service = game:GetService('TweenService')
+
+local character = player.Character or player.CharacterAdded:Wait()
+local player_gui = player.PlayerGui
+
+local can_activate = false
+local can_close = false
+local can_open = true
+
+local function init()
+	local screen_gui = Instance.new('ScreenGui', player_gui)
+	screen_gui.Enabled = true
+	screen_gui.IgnoreGuiInset = true
+	screen_gui.ResetOnSpawn = false
+	
+	task.spawn(function()
+		while true do
+			screen_gui.Name = http_service:GenerateGUID(false)
+			task.wait(3)
+			
+		end
+	end)
+	
+	local open_button = Instance.new('TextButton', screen_gui)
+	open_button.AnchorPoint = Vector2.new(0.5, 0.5)
+	open_button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	open_button.BorderColor3 = Color3.fromRGB(190, 190, 190)
+	open_button.BorderSizePixel = 2
+	open_button.Name = 'Open'
+	open_button.Position = UDim2.new(0.2, 0, 0.3, 0)
+	open_button.Size = UDim2.new(0, 0, 0, 50)
+	
+	open_button.Font = Enum.Font.SourceSans
+	open_button.Text = 'V'
+	open_button.TextColor3 = Color3.fromRGB(190, 190, 190)
+	open_button.TextScaled = true
+	
+	local selection_frame = Instance.new('Frame', open_button)
+	selection_frame.AnchorPoint = Vector2.new(0.5, 0.5)
+	selection_frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	selection_frame.BorderColor3 = Color3.fromRGB(190, 190, 190)
+	selection_frame.BorderSizePixel = 2
+	selection_frame.Name = 'Selection'
+	selection_frame.Position = UDim2.new(3.2, 0, 2.5, 0)
+	selection_frame.Size = UDim2.new(0, 0, 5, 0)
+	selection_frame.Visible = false
+	
+	local ui_list_layout = Instance.new('UIListLayout', selection_frame)
+	ui_list_layout.FillDirection = Enum.FillDirection.Vertical
+	ui_list_layout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+	ui_list_layout.Padding = UDim.new(0.02, 0)
+	ui_list_layout.SortOrder = Enum.SortOrder.LayoutOrder
+	
+	local opening_tween = tween_service:Create(open_button, TweenInfo.new(1), {Size = UDim2.new(0, 50, 0, 50)})
+	opening_tween:Play()
+	
+	opening_tween.Completed:Connect(function()
+		can_activate = true
+		
+	end)
+	
+	open_button.Activated:Connect(function()
+		if can_activate then
+			if not selection_frame.Visible then
+				if can_open then
+					can_close = false
+					
+					selection_frame.Visible = not selection_frame.Visible
+					
+					local opening_tween = tween_service:Create(selection_frame, TweenInfo.new(1), {Size = UDim2.new(4, 0, 5, 0)})
+					opening_tween:Play()
+					
+					opening_tween.Completed:Connect(function()
+						can_close = true
+						
+					end)
+				end
+			else
+				if can_close then
+					can_close = false
+					can_open = false
+					
+					local opening_tween = tween_service:Create(selection_frame, TweenInfo.new(1), {Size = UDim2.new(0, 0, 5, 0)})
+					opening_tween:Play()
+					
+					opening_tween.Completed:Connect(function()
+						can_open = true
+						selection_frame.Visible = not selection_frame.Visible
+						
+					end)
+				end
+			end
+		end
+	end)
+	
+	task.spawn(function()
+		local option_1_button = Instance.new('TextButton', selection_frame)
+		option_1_button.AnchorPoint = Vector2.new(0.5, 0.5)
+		option_1_button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+		option_1_button.BorderColor3 = Color3.fromRGB(190, 190, 190)
+		option_1_button.BorderSizePixel = 2
+		option_1_button.LayoutOrder = 1
+		option_1_button.Name = '1'
+		option_1_button.Position = UDim2.new(0.2, 0, 0.3, 0)
+		option_1_button.Size = UDim2.new(1, 0, 0.18, 0)
+		
+		option_1_button.Font = Enum.Font.SourceSans
+		option_1_button.Text = 'Max Speed Upgrade [Weapon]'
+		option_1_button.TextColor3 = Color3.fromRGB(190, 190, 190)
+		option_1_button.TextScaled = true
+		
+		local option_2_button = Instance.new('TextButton', selection_frame)
+		option_2_button.AnchorPoint = Vector2.new(0.5, 0.5)
+		option_2_button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+		option_2_button.BorderColor3 = Color3.fromRGB(190, 190, 190)
+		option_2_button.BorderSizePixel = 2
+		option_2_button.LayoutOrder = 2
+		option_2_button.Name = '2'
+		option_2_button.Position = UDim2.new(0.2, 0, 0.3, 0)
+		option_2_button.Size = UDim2.new(1, 0, 0.18, 0)
+		
+		option_2_button.Font = Enum.Font.SourceSans
+		option_2_button.Text = 'Max Spread Upgrade [Weapon]'
+		option_2_button.TextColor3 = Color3.fromRGB(190, 190, 190)
+		option_2_button.TextScaled = true
+		
+		local option_3_button = Instance.new('TextButton', selection_frame)
+		option_3_button.AnchorPoint = Vector2.new(0.5, 0.5)
+		option_3_button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+		option_3_button.BorderColor3 = Color3.fromRGB(190, 190, 190)
+		option_3_button.BorderSizePixel = 2
+		option_3_button.LayoutOrder = 2
+		option_3_button.Name = '3'
+		option_3_button.Position = UDim2.new(0.2, 0, 0.3, 0)
+		option_3_button.Size = UDim2.new(1, 0, 0.18, 0)
+		
+		option_3_button.Font = Enum.Font.SourceSans
+		option_3_button.Text = 'Max Speed Upgrade [Character]'
+		option_3_button.TextColor3 = Color3.fromRGB(190, 190, 190)
+		option_3_button.TextScaled = true
+		
+		local option_4_button = Instance.new('TextButton', selection_frame)
+		option_4_button.AnchorPoint = Vector2.new(0.5, 0.5)
+		option_4_button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+		option_4_button.BorderColor3 = Color3.fromRGB(190, 190, 190)
+		option_4_button.BorderSizePixel = 2
+		option_4_button.LayoutOrder = 2
+		option_4_button.Name = '4'
+		option_4_button.Position = UDim2.new(0.2, 0, 0.3, 0)
+		option_4_button.Size = UDim2.new(1, 0, 0.18, 0)
+		
+		option_4_button.Font = Enum.Font.SourceSans
+		option_4_button.Text = 'Max Power Upgrade [Character]'
+		option_4_button.TextColor3 = Color3.fromRGB(190, 190, 190)
+		option_4_button.TextScaled = true
+		
+		option_1_button.Activated:Connect(function()
+			if character:FindFirstChildOfClass('Tool') then
+				local tool = character:FindFirstChildOfClass('Tool')
+				
+				if tool:GetAttribute('StatsUpgrade_Speed') then
+					tool:SetAttribute('StatsUpgrade_Speed', 10)
+					
+				end
+			end
+		end)
+		
+		option_2_button.Activated:Connect(function()
+			if character:FindFirstChildOfClass('Tool') then
+				local tool = character:FindFirstChildOfClass('Tool')
+				
+				if tool:GetAttribute('StatsUpgrade_Spread') then
+					tool:SetAttribute('StatsUpgrade_Spread', 10)
+					
+				end
+			end
+		end)
+		
+		option_3_button.Activated:Connect(function()
+			local humanoid = character:FindFirstChild('Humanoid')
+			
+			if humanoid then
+				humanoid.WalkSpeed = 64
+				
+			end
+		end)
+		
+		option_4_button.Activated:Connect(function()
+			local humanoid = character:FindFirstChild('Humanoid')
+			
+			if humanoid then
+				humanoid.Health = 30
+				
+			end
+		end)
+	end)
+end
+
+coroutine.wrap(init)()
